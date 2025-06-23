@@ -3,10 +3,11 @@ import Imagekit from "../components/Image";
 import PostMenuAction from "../components/PostMenuAction";
 import { Categories } from "../constants";
 import Search from "../components/Search";
+import Comments from "../components/Comments";
 
 const SinglePostPage = () => {
   return (
-    <div className="flex flex-col gap-8 mt-8">
+    <div className="flex flex-col gap-8 mt-8 ">
       {/* detail */}
       <div className="flex gap-8 flex-col lg:flex-row">
         {/* text */}
@@ -46,6 +47,24 @@ const SinglePostPage = () => {
       <div className="flex flex-col md:flex-row gap-8">
         {/* text */}
         <div className="lg:text-lg flex flex-col gap-6 text-justify">
+          <p>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Expedita
+            exercitationem maxime mollitia vitae quod assumenda earum ducimus,
+            ex quam eos dolores molestiae delectus beatae deleniti consequuntur
+            ut quia laudantium error. Lorem ipsum, dolor sit amet consectetur
+            adipisicing elit. Expedita exercitationem maxime mollitia vitae quod
+            assumenda earum ducimus, ex quam eos dolores molestiae delectus
+            beatae deleniti consequuntur ut quia laudantium error.
+          </p>
+          <p>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Expedita
+            exercitationem maxime mollitia vitae quod assumenda earum ducimus,
+            ex quam eos dolores molestiae delectus beatae deleniti consequuntur
+            ut quia laudantium error. Lorem ipsum, dolor sit amet consectetur
+            adipisicing elit. Expedita exercitationem maxime mollitia vitae quod
+            assumenda earum ducimus, ex quam eos dolores molestiae delectus
+            beatae deleniti consequuntur ut quia laudantium error.
+          </p>
           <p>
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Expedita
             exercitationem maxime mollitia vitae quod assumenda earum ducimus,
@@ -118,6 +137,7 @@ const SinglePostPage = () => {
           <Search />
         </div>
       </div>
+      <Comments />
     </div>
   );
 };
