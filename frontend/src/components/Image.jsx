@@ -8,6 +8,12 @@ const Imagekit = ({ src, alt, h, w, className, loading }) => {
       width={w}
       height={h}
       alt={alt}
+      transformation={[
+        {
+          width: w,
+          height: h,
+        },
+      ]}
       loading={loading} // Use "eager" to load immediately. `lazy` is the default value
       className={className}
     />

@@ -9,6 +9,7 @@ const FeaturedPost = () => {
         <Imagekit
           src="featured1.jpeg"
           alt={"featured1"}
+          w={"895"}
           className={"rounded-3xl object-cover"}
         />
         {/* Details */}
@@ -29,13 +30,14 @@ const FeaturedPost = () => {
       </div>
       {/* Other */}
       <div className="w-full lg:w-1/2 flex flex-col gap-4">
-        <div className="lg:h-1/3 flex justify-between items-start gap-4">
+        <div className="lg:h-1/3 flex justify-between  gap-4">
           {/* image */}
           <div className="w-1/3 aspect-video">
             <Imagekit
               src={"featured2.jpeg"}
               alt={"featured2"}
-              className={"rounded-xl object-cover"}
+              className={"rounded-3xl w-full h-full"}
+              w={"298"}
             />
           </div>
           {/* desc */}
