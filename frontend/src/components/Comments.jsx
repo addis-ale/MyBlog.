@@ -17,7 +17,6 @@ const Comments = () => {
       </div>
       <Comment />
       <Comment />
-
       <Comment />
       <Comment />
     </div>
