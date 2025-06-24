@@ -36,3 +36,9 @@ export const Categories = [
     value: "marketing",
   },
 ];
+export const filters = [
+  { label: "Newest", value: "newest" },
+  { label: "Most Popular", value: "popular" },
+  { label: "Trending", value: "trending" },
+  { label: "Oldest", value: "oldest" },
+];
