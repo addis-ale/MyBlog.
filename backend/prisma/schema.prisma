@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  clerkUserId String      @unique
+  id          Int         @id @default(autoincrement())
+  username    String      @unique
+  email       String      @unique
+  img         String?
+  posts       Post[]
+  savedPosts  SavedPost[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  Comment     Comment[]
+}
+
+model Post {
+  id        Int         @id @default(autoincrement())
+  coverImg  String
+  title     String
+  slug      String      @unique
+  desc      String?
+  content   String
+  isFeaturd Boolean     @default(false)
+  visit     Int         @default(0)
+  userId    Int
+  user      User        @relation(fields: [userId], references: [id])
+  savedBy   SavedPost[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  Comment   Comment[]
+}
+
+model SavedPost {
+  id     Int  @id @default(autoincrement())
+  userId Int
+  postId Int
+  user   User @relation(fields: [userId], references: [id])
+  post   Post @relation(fields: [postId], references: [id])
+
+  @@unique([userId, postId])
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String
+  postId    Int
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
