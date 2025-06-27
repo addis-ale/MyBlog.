@@ -23,9 +23,10 @@ model User {
 
 model Post {
   id        Int         @id @default(autoincrement())
-  coverImg  String
+  coverImg  String?
   title     String
   slug      String      @unique
+  category  String      @default("general")
   desc      String?
   content   String
   isFeaturd Boolean     @default(false)
