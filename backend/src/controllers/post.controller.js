@@ -69,31 +69,75 @@ export const getPost = async (req, res) => {
 };
 export const deletePost = async (req, res) => {
   const clerkUserId = req.auth().userId;
+  const postId = +req.params.id;
   if (!clerkUserId) {
     return res.status(401).json({ message: "Not authenticated" });
   }
-  const user = await prisma.user.findFirst({
-    where: {
-      clerkUserId,
-    },
-  });
-  const postId = +req.params.id;
-  const postToDeleted = await prisma.post.findFirst({
+  const role = req.auth()?.sessionClaims?.metadata?.role || "user";
+
+  if (role === "admin") {
+    await prisma.post.delete({
+      where: { id: postId },
+    });
+    return res.status(200).json({ message: "Post deleted successfully" });
+  } else {
+    const user = await prisma.user.findFirst({
+      where: {
+        clerkUserId,
+      },
+    });
+    const postToDeleted = await prisma.post.findFirst({
+      where: {
+        id: postId,
+        userId: user.id,
+      },
+    });
+    if (!postToDeleted) {
+      return res.status(403).json({ message: "No post found to be deleted" });
+    }
+    await prisma.post.delete({
+      where: { id: postId },
+    });
+    return res.status(200).json({ message: "Post deleted successfully" });
+  }
+};
+export const featurePost = async (req, res) => {
+  const clerkUserId = req.auth().userId;
+  const postId = req.body.postId;
+
+  if (!clerkUserId) {
+    return res.status(401).json("Not authenticated!");
+  }
+
+  const role = req.auth().sessionClaims?.metadata?.role || "user";
+
+  if (role !== "admin") {
+    return res.status(403).json("You cannot feature posts!");
+  }
+
+  const post = await prisma.post.findFirst({
     where: {
       id: postId,
-      userId: user.id,
     },
   });
-  if (!postToDeleted) {
-    return res.status(403).json({ message: "No post found to be deleted" });
+
+  if (!post) {
+    return res.status(404).json("Post not found!");
   }
-  await prisma.post.delete({
-    where: { id: postId },
+
+  const isFeatured = post.isFeaturd;
+
+  const updatedPost = await prisma.post.update({
+    where: {
+      id: postId,
+    },
+    data: {
+      isFeaturd: !isFeatured,
+    },
   });
 
-  return res.status(200).json({ message: "Post deleted successfully" });
+  res.status(200).json(updatedPost);
 };
-export const featurePost = async (req, res) => {};
 const imagekit = new ImageKit({
   urlEndpoint: process.env.IK_URL_ENDPOINT,
   publicKey: process.env.IK_PUBLIC_KEY,

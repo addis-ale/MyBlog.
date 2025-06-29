@@ -44,7 +44,15 @@ export const getPostComments = async (req, res) => {
 export const deleteComment = async (req, res) => {
   try {
     const clerkUserId = req.auth().userId;
-    const id = parseInt(req.params.id); // Ensure it's an integer (if using Int in schema)
+    const id = parseInt(req.params.id);
+    const role = req.auth()?.sessionClaims?.metadata?.role || "user";
+
+    if (role === "admin") {
+      await prisma.comment.delete({
+        where: { id },
+      });
+      return res.status(200).json({ message: "Comment deleted successfully." });
+    }
 
     const user = await prisma.user.findFirst({
       where: { clerkUserId },

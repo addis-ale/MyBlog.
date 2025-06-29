@@ -9,7 +9,7 @@ const PostMenuAction = ({ post }) => {
   const { getToken } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-
+  const isAdmin = user?.publicMetadata?.role === "admin" || false;
   const { data: savedPosts } = useQuery({
     queryKey: ["savedPosts"],
     queryFn: async () => {
@@ -68,6 +68,31 @@ const PostMenuAction = ({ post }) => {
       }
     },
   });
+  const featureMutation = useMutation({
+    mutationFn: async () => {
+      const token = await getToken();
+      return axios.patch(
+        `/api/posts/feature`,
+        {
+          postId: post.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["post", post.slug] });
+    },
+    onError: (error) => {
+      toast.error(error.response.data);
+    },
+  });
+  const handleFeature = () => {
+    featureMutation.mutate();
+  };
   const handleSave = () => {
     if (!user) {
       navigate("/login");
@@ -102,7 +127,41 @@ const PostMenuAction = ({ post }) => {
           )}
         </div>
       )}
-      {user && user.username === post.user.username && (
+
+      {isAdmin && (
+        <div
+          className="flex items-center gap-2 py-2 text-sm cursor-pointer"
+          onClick={handleFeature}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 48 48"
+            width="20px"
+            height="20px"
+          >
+            <path
+              d="M24 2L29.39 16.26L44 18.18L33 29.24L35.82 44L24 37L12.18 44L15 29.24L4 18.18L18.61 16.26L24 2Z"
+              stroke="black"
+              strokeWidth="2"
+              fill={
+                featureMutation.isPending
+                  ? post.isFeaturd
+                    ? "none"
+                    : "black"
+                  : post.isFeaturd
+                  ? "black"
+                  : "none"
+              }
+            />
+          </svg>
+          <span>Feature</span>
+          {featureMutation.isPending && (
+            <span className="text-xs">(in progress)</span>
+          )}
+        </div>
+      )}
+
+      {user && (user.username === post.user.username || isAdmin) && (
         <div
           className="flex items-center gap-2 text-sm py-2 cursor-pointer"
           onClick={() => deleteMutate()}
