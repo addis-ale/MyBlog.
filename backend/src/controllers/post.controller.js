@@ -53,8 +53,6 @@ export const getPosts = async (req, res) => {
   const totalPost = await prisma.post.count();
   const hasMore = limit * page < totalPost;
   res.status(200).json({ posts, hasMore });
-  console.log(posts);
-  console.log("page is", page);
 };
 export const getPost = async (req, res) => {
   const { slug } = req.params;
@@ -64,6 +62,7 @@ export const getPost = async (req, res) => {
     },
     include: {
       user: true,
+      savedBy: true,
     },
   });
   res.status(200).json(post);
@@ -79,16 +78,14 @@ export const deletePost = async (req, res) => {
     },
   });
   const postId = +req.params.id;
-  console.log("post id", postId);
   const postToDeleted = await prisma.post.findFirst({
     where: {
       id: postId,
+      userId: user.id,
     },
   });
-  if (!postToDeleted || postToDeleted.userId !== user.id) {
-    return res
-      .status(403)
-      .json({ message: "Not authorized to delete this post" });
+  if (!postToDeleted) {
+    return res.status(403).json({ message: "No post found to be deleted" });
   }
   await prisma.post.delete({
     where: { id: postId },
