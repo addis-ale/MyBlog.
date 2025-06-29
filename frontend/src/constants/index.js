@@ -1,8 +1,8 @@
 export const DesktopLinks = [
-  { label: "Home", link: "#" },
-  { label: "Tranding", link: "#" },
-  { label: "Most Popular", link: "#" },
-  { label: "About", link: "#" },
+  { label: "Home", link: "/" },
+  { label: "Tranding", link: "/posts?sort=trending" },
+  { label: "Most Popular", link: "/posts?sort=popular" },
+  { label: "About", link: "/" },
 ];
 export const Categories = [
   {

@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import Imagekit from "./Image";
 import { format } from "timeago.js";
 const PostListItem = ({ post }) => {
-  console.log("the single post is", post);
   return (
     <div className="flex flex-col xl:flex-row gap-8 mb-8">
       {/* image */}
@@ -22,7 +21,10 @@ const PostListItem = ({ post }) => {
         </Link>
         <div className="flex items-center gap-2 text-sm text-gray-400">
           <span>Written by</span>
-          <Link to={""} className="text-blue-800">
+          <Link
+            to={`/posts?author=${post.user.username}`}
+            className="text-blue-800"
+          >
             {post.user.username}
           </Link>
           <span>on</span>

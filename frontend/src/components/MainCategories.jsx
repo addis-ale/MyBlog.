@@ -11,7 +11,10 @@ const MainCategories = () => {
           <Link
             key={category.label}
             to={category.link}
-            className=" px-4 py-2 hover:bg-blue-50 rounded-full"
+            className={`px-4 py-2 hover:bg-blue-50 rounded-full ${
+              category.label === "All Posts" &&
+              "bg-blue-800 text-white hover:bg-blue-800"
+            }`}
           >
             {category.label}
           </Link>

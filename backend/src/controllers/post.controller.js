@@ -7,7 +7,7 @@ const slugify = (title) =>
     .trim()
     .replace(/[^a-z0-9\s-]/g, "") // remove special chars
     .replace(/\s+/g, "-") // replace spaces with hyphens
-    .replace(/-+/g, "-"); // collapse multiple dashes
+    .replace(/-+/g, "-");
 
 const generateUniqueSlug = (title) => {
   const baseSlug = slugify(title);
@@ -37,15 +37,71 @@ export const createPost = async (req, res, next) => {
       userId: user.id,
     },
   });
+
   res.status(200).json({ message: "post created successfully", post: newPost });
 };
 export const getPosts = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.page) || 5;
+  const query = {};
+  const cat = req.query.cat;
+  const author = req.query.author;
+  const searchQuery = req.query.searchQuery;
+  const sortQuery = req.query.sortQuery;
+  const featured = req.query.featured;
+  if (cat && cat !== "All Posts") {
+    query.category = cat;
+  }
+  if (searchQuery) {
+    query.title = {
+      contains: searchQuery,
+      mode: "insensitive",
+    };
+  }
+  if (author) {
+    const user = await prisma.user.findFirst({
+      where: {
+        username: author,
+      },
+    });
+    if (!user) {
+      return res.status(404).json("No post found!");
+    }
+    query.userId = user.id;
+  }
+  let sort = {};
+  if (sortQuery) {
+    switch (sortQuery) {
+      case "newest":
+        sort = { createdAt: "desc" };
+        break;
+      case "oldest":
+        sort = { createdAt: "asc" };
+        break;
+      case "popular":
+        sort = { visit: "desc" };
+        break;
+      case "trending":
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+        query.createdAt = {
+          gte: sevenDaysAgo,
+        };
+        sort = { visit: "desc" };
+        break;
+      default:
+        break;
+    }
+  }
+  if (featured) {
+    query.isFeaturd = true;
+  }
+  console.log(query);
   const posts = await prisma.post.findMany({
+    where: query,
     skip: (page - 1) * limit,
     take: limit,
-    orderBy: { createdAt: "desc" },
+    orderBy: sort,
     include: {
       user: true,
     },
@@ -63,6 +119,12 @@ export const getPost = async (req, res) => {
     include: {
       user: true,
       savedBy: true,
+    },
+  });
+  await prisma.post.update({
+    where: { id: post.id },
+    data: {
+      visit: post.visit + 1,
     },
   });
   res.status(200).json(post);
