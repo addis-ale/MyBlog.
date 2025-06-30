@@ -14,7 +14,7 @@ const PostMenuAction = ({ post }) => {
     queryKey: ["savedPosts"],
     queryFn: async () => {
       const token = await getToken();
-      return axios.get(`/api/save-post`, {
+      return axios.get(`${import.meta.env.VITE_API_URL}/api/save-post`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -27,23 +27,29 @@ const PostMenuAction = ({ post }) => {
 
   const savePost = async (postId) => {
     const token = await getToken();
-    const res = await axios.post(`/api/save-post/${postId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await axios.post(
+      `${import.meta.env.VITE_API_URL}/api/save-post/${postId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
     return res.data;
   };
   const { mutate: deleteMutate, isPending: deletePending } = useMutation({
     mutationFn: async () => {
       const token = await getToken();
-      const res = await axios.delete(`/api/posts/${post.id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const res = await axios.delete(
+        `${import.meta.env.VITE_API_URL}/api/posts/${post.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       return res.data;
     },
     onSuccess: () => {
@@ -72,7 +78,7 @@ const PostMenuAction = ({ post }) => {
     mutationFn: async () => {
       const token = await getToken();
       return axios.patch(
-        `/api/posts/feature`,
+        `${import.meta.env.VITE_API_URL}/api/posts/feature`,
         {
           postId: post.id,
         },

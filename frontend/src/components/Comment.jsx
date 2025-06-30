@@ -16,11 +16,14 @@ const Comment = ({ comment, postId }) => {
   const mutation = useMutation({
     mutationFn: async () => {
       const token = await getToken();
-      return axios.delete(`api/comments/${comment.id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      return axios.delete(
+        `${import.meta.env.VITE_API_URL}/api/comments/${comment.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["comments", postId] });

@@ -9,7 +9,9 @@ import { useQuery } from "@tanstack/react-query";
 import { format } from "timeago.js";
 
 const fetchPost = async (slug) => {
-  const res = await axios.get(`api/posts/${slug}`);
+  const res = await axios.get(
+    `${import.meta.env.VITE_API_URL}/api/posts/${slug}`
+  );
   return res.data;
 };
 

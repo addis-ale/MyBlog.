@@ -5,7 +5,9 @@ import { useAuth, useUser } from "@clerk/clerk-react";
 import { toast } from "react-toastify";
 
 const fetchComments = async (postId) => {
-  const res = await axios.get(`/api/comments/${postId}`);
+  const res = await axios.get(
+    `${import.meta.env.VITE_API_URL}/api/comments/${postId}`
+  );
   return res.data;
 };
 
@@ -23,11 +25,15 @@ const Comments = ({ postId }) => {
   const mutation = useMutation({
     mutationFn: async (newComment) => {
       const token = await getToken();
-      const res = await axios.post(`/api/comments/${postId}`, newComment, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/comments/${postId}`,
+        newComment,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       return res;
     },

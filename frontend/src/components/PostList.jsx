@@ -5,7 +5,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useSearchParams } from "react-router-dom";
 const fetchPosts = async ({ pageParam, searchParams }) => {
   const searchParamObj = Object.fromEntries(searchParams);
-  const res = await axios.get("/api/posts", {
+  const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/posts`, {
     params: { page: pageParam, limit: 5, ...searchParamObj },
   });
   return res;

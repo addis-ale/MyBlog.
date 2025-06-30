@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { format } from "timeago.js";
 
 const fetchPosts = async () => {
-  const res = await axios.get("/api/posts", {
+  const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/posts`, {
     params: { limit: 4, sortQuery: "newest", featured: true },
   });
   return res.data;
