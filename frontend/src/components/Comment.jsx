@@ -7,8 +7,7 @@ import axios from "axios";
 
 const Comment = ({ comment, postId }) => {
   const { user } = useUser();
-  console.log(user);
-  console.log("check", comment.user.username, user.username);
+
   const { getToken } = useAuth();
   const role = user?.publicMetadata?.role;
 

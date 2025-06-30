@@ -6,7 +6,7 @@ import { format } from "timeago.js";
 
 const fetchPosts = async () => {
   const res = await axios.get("/api/posts", {
-    params: { limit: 4, sortQuery: "newest" },
+    params: { limit: 4, sortQuery: "newest", featured: true },
   });
   return res.data;
 };
@@ -19,7 +19,6 @@ const FeaturedPost = () => {
   if (error) return "Something went wrong!" + error.message;
 
   const posts = data.posts;
-  console.log("feature", posts);
   if (!posts || posts.length === 0) {
     return;
   }

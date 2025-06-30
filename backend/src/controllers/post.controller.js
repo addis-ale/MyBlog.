@@ -42,7 +42,7 @@ export const createPost = async (req, res, next) => {
 };
 export const getPosts = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.page) || 5;
+  const limit = parseInt(req.query.limit) || 5;
   const query = {};
   const cat = req.query.cat;
   const author = req.query.author;
@@ -96,7 +96,7 @@ export const getPosts = async (req, res) => {
   if (featured) {
     query.isFeaturd = true;
   }
-  console.log("query", query);
+
   const posts = await prisma.post.findMany({
     where: query,
     skip: (page - 1) * limit,
@@ -106,7 +106,7 @@ export const getPosts = async (req, res) => {
       user: true,
     },
   });
-  console.log(posts);
+
   const totalPost = await prisma.post.count();
   const hasMore = limit * page < totalPost;
   res.status(200).json({ posts, hasMore });

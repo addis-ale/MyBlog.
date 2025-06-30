@@ -49,7 +49,6 @@ const Comments = ({ postId }) => {
 
     mutation.mutate(data);
   };
-  console.log("comments", data);
 
   return (
     <div className="flex flex-col gap-8 lg:w-3/5 mb-12">

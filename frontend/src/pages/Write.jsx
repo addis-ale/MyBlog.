@@ -64,7 +64,7 @@ const Write = () => {
       desc: form.get("desc"),
       content: value,
     };
-    console.log(data);
+
     mutate(data);
   };
   if (!isLoaded) {
