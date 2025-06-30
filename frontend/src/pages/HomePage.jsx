@@ -17,11 +17,14 @@ const HomePage = () => {
         {/* title */}
         <div>
           <h1 className="text-2xl md:text-5xl xl:text-6xl text-gray-800 font-bold">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+            Fuel Your Curiosity and Discover Insightful Stories — One Post at a
+            Time
           </h1>
           <p className="mt-8 text-md md:text-xl">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse qui,
-            tempora quod veritatis facilis assumenda.
+            Step into a world of stories, insights, and inspiration. Whether
+            you're here to learn something new, spark ideas, or just escape into
+            great reads — this blog is your daily dose of thought-provoking
+            content crafted with passion and purpose.
           </p>
         </div>
         {/* animated button */}

@@ -96,7 +96,7 @@ export const getPosts = async (req, res) => {
   if (featured) {
     query.isFeaturd = true;
   }
-  console.log(query);
+  console.log("query", query);
   const posts = await prisma.post.findMany({
     where: query,
     skip: (page - 1) * limit,
@@ -106,6 +106,7 @@ export const getPosts = async (req, res) => {
       user: true,
     },
   });
+  console.log(posts);
   const totalPost = await prisma.post.count();
   const hasMore = limit * page < totalPost;
   res.status(200).json({ posts, hasMore });

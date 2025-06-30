@@ -6,7 +6,7 @@ import { format } from "timeago.js";
 
 const fetchPosts = async () => {
   const res = await axios.get("/api/posts", {
-    params: { limit: 4, sortQuery: "newest", featured: true },
+    params: { limit: 4, sortQuery: "newest" },
   });
   return res.data;
 };
